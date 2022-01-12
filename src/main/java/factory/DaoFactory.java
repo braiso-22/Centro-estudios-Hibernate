@@ -5,6 +5,7 @@
 package factory;
 
 import dao.AlumnoDAO;
+import dao.ProfesorDAO;
 
 /**
  *
@@ -18,6 +19,10 @@ public class DaoFactory {
 
     public AlumnoDAO getAlumnoDao() {
         return new AlumnoDAO();
+    }
+
+    public ProfesorDAO getProfesorDao() {
+        return new ProfesorDAO();
     }
 
 }
