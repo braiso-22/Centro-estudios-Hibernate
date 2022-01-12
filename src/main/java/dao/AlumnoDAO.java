@@ -16,9 +16,7 @@ public class AlumnoDAO implements DaoInterface<Alumno> {
 
     @Override
     public void persist(Alumno entity, Session session) {
-
         session.persist(entity);
-
     }
 
     @Override
@@ -28,9 +26,7 @@ public class AlumnoDAO implements DaoInterface<Alumno> {
 
     @Override
     public Alumno findById(int id, Session session) {
-
         return (Alumno) session.get(Alumno.class, id);
-
     }
 
     @Override
