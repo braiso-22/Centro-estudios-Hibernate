@@ -12,7 +12,7 @@ import vo.Alumno;
  *
  * @author brais.fernandezvazqu
  */
-public class AlumnoDAO implements AlumnoDaoInterface<Alumno> {
+public class AlumnoDAO implements DaoInterface<Alumno> {
 
     @Override
     public void persist(Alumno entity, Session session) {
