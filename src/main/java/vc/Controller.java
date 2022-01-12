@@ -6,6 +6,7 @@ package vc;
 
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import service.AlumnoService;
 import vo.Alumno;
@@ -18,13 +19,12 @@ public class Controller {
 
     static View v = new View();
     static List<Alumno> alumnos;
-    
+
     static AlumnoService alumnoService = new AlumnoService();
 
     public static void main(String[] args) {
 
         v.showMessage("Cargando...");
-
         int opcion;
         Connection conn = null;
         do {
@@ -85,7 +85,6 @@ public class Controller {
 
     public static String alumno(int opcion, Connection conn) {
         String output = "";
-        String id;
         switch (opcion) {
             case 1:
                 alumnos = alumnoService.findAll();
@@ -96,6 +95,47 @@ public class Controller {
             case 2:
                 output = proccesAlumnos("Introduce el id");
                 break;
+            case 3:
+                String dni,
+                 nombre,
+                 apellido,
+                 curso;
+                LocalDate fecha;
+
+                dni = v.showMessageString("Introduce el dni");
+                nombre = v.showMessageString("Introduce el nombre");
+                apellido = v.showMessageString("introduce los apellidos");
+                curso = v.showMessageString("Introduce el curso");
+
+                try {
+                    fecha = LocalDate.parse(v.showMessageString("Introduce la fecha de nacimiento YYYY-MM-DD"));
+                    alumnoService.persist(new Alumno(dni, nombre, apellido, curso, fecha));
+
+                } catch (DateTimeParseException dTPE) {
+                    v.showMessage(String.format("No se pudo añadir el alumno, fecha mal formada(%s)\n", dTPE.getParsedString()));
+                } catch (Exception e) {
+                    v.showMessage("No se pudo añadir el alumno" + e.getMessage());
+                }
+                break;
+            case 4:
+                int id = v.showMessageInt("Introduce el id del alumno a borrar");
+                try {
+                    alumnoService.delete(id);
+                } catch (IllegalArgumentException iAE) {
+                    v.showMessage("No hay alumnos con ese id");
+                } catch (Exception e) {
+                    v.showMessage("Error: " + e.getMessage());
+                }
+
+                break;
+            case 5:
+                int aleatorio = (int) (Math.random() * 1000 + 1);
+                int codigo = v.showMessageInt("Si quieres borrar todo introduce el siguiente codigo: " + aleatorio);
+                if (codigo == aleatorio) {
+                    alumnoService.deleteAll();
+                } else {
+                    v.showMessage("No se han borrado los datos");
+                }
             /*case 3:
                 output = proccesAlumnos("Introduce el nombre", AlumnoDAO.GETBYNOMBRE, conn);
                 break;
@@ -125,26 +165,7 @@ public class Controller {
                 alumnoDAO.insertUsingFile(id, conn);
                 break;
              */
-            case 3:
-                String dni,
-                 nombre,
-                 apellido,
-                 curso;
-                LocalDate fecha;
 
-                dni = v.showMessageString("Introduce el dni");
-                nombre = v.showMessageString("Introduce el nombre");
-                apellido = v.showMessageString("introduce los apellidos");
-                curso = v.showMessageString("Introduce el curso");
-
-                try {
-                    fecha = LocalDate.parse(v.showMessageString("Introduce la fecha de nacimiento YYYY-MM-DD"));
-                    alumnoService.persist(new Alumno(dni, nombre, apellido, curso, fecha));
-
-                } catch (Exception e) {
-                    v.showMessage("No se pudo añadir el alumno" + e.getMessage());
-                }
-                break;
             case 0:
                 break;
             default:
@@ -162,6 +183,8 @@ public class Controller {
             for (Alumno al : alumnos) {
                 output += al.toString();
             }
+        } catch (NullPointerException nPE) {
+            v.showMessage("No hay alumnos con ese id");
         } catch (Exception e) {
             v.showMessage("Error " + e.getMessage());
         }
