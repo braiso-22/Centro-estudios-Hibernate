@@ -13,6 +13,7 @@
     <property name="hibernate.default_schema">centro_estudios</property>
     <property name="hibernate.connection.pool_size">10</property>
     <mapping class="vo.Alumno"/>
+    <mapping class="vo.Profesor"/>
   </session-factory>
 </hibernate-configuration>
 
