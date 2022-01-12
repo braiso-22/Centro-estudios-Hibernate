@@ -10,9 +10,9 @@
     <property name="hibernate.connection.username">admin</property>
     <property name="hibernate.connection.password">abc123.</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-    <property name="hibernate.default_schema">libreria</property>
+    <property name="hibernate.default_schema">centro_estudios</property>
     <property name="hibernate.connection.pool_size">10</property>
-    <mapping class="vo.Student"/>
+    <mapping class="vo.Alumno"/>
   </session-factory>
 </hibernate-configuration>
 
