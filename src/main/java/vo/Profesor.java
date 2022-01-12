@@ -22,7 +22,7 @@ public class Profesor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
 
     @Column(name = "dni", nullable = false)
     private String dni;
@@ -46,7 +46,7 @@ public class Profesor implements Serializable {
         this.sueldo = sueldo;
     }
 
-    public Profesor(String id, String dni, String nombre, String apellidos, String departamento, float sueldo) {
+    public Profesor(int id, String dni, String nombre, String apellidos, String departamento, float sueldo) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
@@ -145,11 +145,11 @@ public class Profesor implements Serializable {
         this.dni = dni;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
