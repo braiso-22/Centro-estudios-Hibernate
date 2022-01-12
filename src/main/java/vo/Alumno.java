@@ -15,7 +15,7 @@ public class Alumno implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
     @Column(name = "dni", nullable = false)
     private String dni;
     @Column(name = "nombre", nullable = false)
@@ -31,7 +31,7 @@ public class Alumno implements Serializable {
         super();
     }
 
-    public Alumno(String id, String dni, String nombre, String apellidos, String curso, LocalDate fechaNacimiento) {
+    public Alumno(int id, String dni, String nombre, String apellidos, String curso, LocalDate fechaNacimiento) {
         super();
         this.id = id;
         this.dni = dni;
@@ -49,11 +49,11 @@ public class Alumno implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getCodigo() {
+    public int getCodigo() {
         return id;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(int codigo) {
         this.id = codigo;
     }
 
