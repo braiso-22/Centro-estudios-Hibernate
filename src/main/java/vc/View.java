@@ -45,7 +45,10 @@ public class View {
     public int menuAlumno() {
         System.out.println("Selecciona una opcion:");
         System.out.println("01.- Ver todos los alumnos");
-        System.out.println("02.- Buscar alumno por DNI");
+        System.out.println("02.- Buscar alumno por id");
+        System.out.println("03.- Insertar alumno a mano");
+        System.out.println("04.- Eliminar un alumno");
+        System.out.println("05.- Eliminar todos los alumnos");
         /*System.out.println("03.- Ver alumnos buscando por nombre");
         System.out.println("04.- Ver alumnos buscando por apellido");
         System.out.println("05.- Ver alumnos buscando por curso");
@@ -53,7 +56,7 @@ public class View {
         System.out.println("07.- Ver alumnos por asignatura");
         System.out.println("08.- Ver alumnos por profesor");
         System.out.println("09.- Insertar alumnos por archivo");*/
-        System.out.println("10.- Insertar alumno a mano");
+
         System.out.println("0.- Volver");
         return leerInt();
     }
@@ -61,7 +64,8 @@ public class View {
     public int menuProfesor() {
         System.out.println("Selecciona una opcion:");
         System.out.println("01.- Ver todos los profesores");
-        System.out.println("02.- Buscar profesor por DNI");
+        System.out.println("02.- Buscar profesor por id");
+        System.out.println("03.- Eliminar profesor");
         /*System.out.println("03.- Ver profesores buscando por nombre");
         System.out.println("04.- Ver profesores buscando por apellido");
         System.out.println("05.- Ver profesores buscando por departamento");
