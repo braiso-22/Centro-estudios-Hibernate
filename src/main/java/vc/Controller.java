@@ -4,12 +4,13 @@
  */
 package vc;
 
-import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import service.AlumnoService;
+import service.ProfesorService;
 import vo.Alumno;
+import vo.Profesor;
 
 /**
  *
@@ -19,14 +20,16 @@ public class Controller {
 
     static View v = new View();
     static List<Alumno> alumnos;
+    static List<Profesor> profesores;
 
     static AlumnoService alumnoService = new AlumnoService();
+    static ProfesorService profesorService = new ProfesorService();
 
     public static void main(String[] args) {
 
         v.showMessage("Cargando...");
         int opcion;
-        Connection conn = null;
+
         do {
 
             int opcion2 = -1;
@@ -42,13 +45,13 @@ public class Controller {
                     switch (opcion) {
                         case 1:
                             opcion2 = v.menuAlumno();
-                            output += alumno(opcion2, conn);
+                            output += alumno(opcion2);
                             break;
-                        /*case 2:
+                        case 2:
                             opcion2 = v.menuProfesor();
-                            output += profesor(opcion2, conn);
+                            output += profesor(opcion2);
                             break;
-                        case 3:
+                        /*case 3:
                             opcion2 = v.menuAsignatura();
                             output += asignatura(opcion2, conn);
                             break;
@@ -83,7 +86,7 @@ public class Controller {
 
     }
 
-    public static String alumno(int opcion, Connection conn) {
+    public static String alumno(int opcion) {
         String output = "";
         switch (opcion) {
             case 1:
@@ -191,22 +194,21 @@ public class Controller {
 
         return output;
     }
-    /*
-    private static String profesor(int opcion, Connection conn) {
+
+    private static String profesor(int opcion) {
         String output = "";
-        String id;
         switch (opcion) {
             case 1:
-                profesores = profesorDAO.get(ProfesorDAO.GETALL, "", conn);
+                profesores = profesorService.findAll();
                 for (Profesor prof : profesores) {
                     output += prof.toString();
                 }
 
                 break;
             case 2:
-                output = processProfesores("Introduce el DNI", ProfesorDAO.GETBYDNI, conn);
+                output = processProfesores("Introduce el id");
                 break;
-            case 3:
+            /*case 3:
                 output = processProfesores("Introduce el nombre", ProfesorDAO.GETBYNOMBRE, conn);
                 break;
             case 4:
@@ -236,8 +238,8 @@ public class Controller {
             case 9:
                 id = v.showMessageString("Introduce el archivo");
                 profesorDAO.insertUsingFile(id, conn);
-                break;
-            case 10:
+                break;*/
+            case 3:
                 String dni,
                  nombre,
                  apellido,
@@ -251,9 +253,9 @@ public class Controller {
 
                 try {
                     sueldo = Float.valueOf(v.showMessageString("Introduce el sueldo"));
-                    profesorDAO.add(new Profesor(dni, nombre, apellido, departamento, sueldo), conn);
+                    profesorService.persist(new Profesor(dni, nombre, apellido, departamento, sueldo));
                 } catch (NumberFormatException e) {
-                    v.showMessage("No se pudo añadir el alumno" + e.getMessage());
+                    v.showMessage("No se pudo añadir el profesor" + e.getMessage());
                 } catch (Exception e) {
                     v.showMessage(e.getMessage());
                 }
@@ -265,16 +267,24 @@ public class Controller {
 
     }
 
-    private static String processProfesores(String mensaje, int num, Connection conn) {
-        String id = "", output = "";
-        id = v.showMessageString(mensaje);
-        profesores = profesorDAO.get(num, id, conn);
-        for (Profesor prof : profesores) {
-            output += prof.toString();
+    private static String processProfesores(String mensaje) {
+        String output = "";
+        int id = v.showMessageInt(mensaje);
+        try {
+            profesores.clear();
+            profesores.add(profesorService.findById(id));
+            for (Profesor prof : profesores) {
+                output += prof.toString();
+            }
+        } catch (NullPointerException nPE) {
+            v.showMessage("No hay profesores con ese id");
+        } catch (Exception e) {
+            v.showMessage("Error " + e.getMessage());
         }
+
         return output;
     }
-
+    /*
     private static String asignatura(int opcion, Connection conn) {
         String output = "";
         String id;
@@ -346,5 +356,8 @@ public class Controller {
                 break;
         }
         return output;
-    }*/
+    }
+
+
+     */
 }
