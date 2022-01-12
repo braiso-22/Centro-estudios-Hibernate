@@ -41,6 +41,14 @@ public class Alumno implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    public Alumno(String dni, String nombre, String apellidos, String curso, LocalDate fechaNacimiento) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.curso = curso;
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
     public String getCodigo() {
         return id;
     }
