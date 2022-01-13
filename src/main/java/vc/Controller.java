@@ -8,8 +8,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import service.AlumnoService;
+import service.AsignaturaService;
 import service.ProfesorService;
 import vo.Alumno;
+import vo.Asignatura;
 import vo.Profesor;
 
 /**
@@ -21,9 +23,11 @@ public class Controller {
     static View v = new View();
     static List<Alumno> alumnos;
     static List<Profesor> profesores;
+    static List<Asignatura> asignaturas;
 
     static AlumnoService alumnoService = new AlumnoService();
     static ProfesorService profesorService = new ProfesorService();
+    static AsignaturaService asignaturaService = new AsignaturaService();
 
     public static void main(String[] args) {
 
@@ -51,11 +55,11 @@ public class Controller {
                             opcion2 = v.menuProfesor();
                             output += profesor(opcion2);
                             break;
-                        /*case 3:
+                        case 3:
                             opcion2 = v.menuAsignatura();
-                            output += asignatura(opcion2, conn);
+                            output += asignatura(opcion2);
                             break;
-                        case 4:
+                        /*case 4:
                             opcion2 = v.menuMatriculas();
                             output += matricula(opcion2, conn);
                             break;*/
@@ -87,17 +91,15 @@ public class Controller {
     }
 
     public static String alumno(int opcion) {
-        String output = "";
+
         switch (opcion) {
             case 1:
                 alumnos = alumnoService.findAll();
-                for (Alumno al : alumnos) {
-                    output += al.toString();
-                }
-                break;
+                return alumnos.isEmpty() ? "No hay alumnos" : alumnos.stream().map(al -> al.toString()).reduce("", (string, str) -> string.concat(str));
+
             case 2:
-                output = proccesAlumnos("Introduce el id");
-                break;
+                return proccesAlumnos("Introduce el id");
+
             case 3:
                 String dni,
                  nombre,
@@ -113,32 +115,30 @@ public class Controller {
                 try {
                     fecha = LocalDate.parse(v.showMessageString("Introduce la fecha de nacimiento YYYY-MM-DD"));
                     alumnoService.persist(new Alumno(dni, nombre, apellido, curso, fecha));
-
+                    return "Alumno añadido";
                 } catch (DateTimeParseException dTPE) {
-                    v.showMessage(String.format("No se pudo añadir el alumno, fecha mal formada(%s)\n", dTPE.getParsedString()));
+                    return String.format("No se pudo añadir el alumno, fecha mal formada(%s)\n", dTPE.getParsedString());
                 } catch (Exception e) {
-                    v.showMessage("No se pudo añadir el alumno" + e.getMessage());
+                    return "No se pudo añadir el alumno ".concat(e.getMessage());
                 }
-                break;
+
             case 4:
                 int id = v.showMessageInt("Introduce el id del alumno a borrar");
                 try {
                     alumnoService.delete(id);
+                    return "Alumno eliminado";
                 } catch (IllegalArgumentException iAE) {
-                    v.showMessage("No hay alumnos con ese id");
+                    return "No hay alumnos con ese id";
                 } catch (Exception e) {
-                    v.showMessage("Error: " + e.getMessage());
+                    return "Error: " + e.getMessage();
                 }
 
-                break;
             case 5:
-                int aleatorio = (int) (Math.random() * 1000 + 1);
+                int aleatorio = generarClave();
                 int codigo = v.showMessageInt("Si quieres borrar todo introduce el siguiente codigo: " + aleatorio);
-                if (codigo == aleatorio) {
-                    alumnoService.deleteAll();
-                } else {
-                    v.showMessage("No se han borrado los datos");
-                }
+                alumnoService.deleteAll();
+                return codigo == aleatorio ? "Todos borrados\n" : "No se han borrado los datos\n";
+
             /*case 3:
                 output = proccesAlumnos("Introduce el nombre", AlumnoDAO.GETBYNOMBRE, conn);
                 break;
@@ -168,46 +168,110 @@ public class Controller {
                 alumnoDAO.insertUsingFile(id, conn);
                 break;
              */
-
-            case 0:
+ /*case 3:
+                output = proccesAlumnos("Introduce el nombre", AlumnoDAO.GETBYNOMBRE, conn);
                 break;
+            case 4:
+
+                id = v.showMessageString("Introduce los apellidos");
+                id = "%" + id + "%";
+                alumnos = alumnoDAO.get(AlumnoDAO.GETBYAPELLIDO, id, conn);
+                for (Alumno al : alumnos) {
+                    output += al.toString();
+                }
+                break;
+            case 5:
+                output = proccesAlumnos("Introduce el curso", AlumnoDAO.GETBYCURSO, conn);
+                break;
+            case 6:
+                output = proccesAlumnos("Introduce el año", AlumnoDAO.GETBYNACIMIENTO, conn);
+                break;
+            case 7:
+                output = proccesAlumnos("Introduce el nombre de asignatura:", AlumnoDAO.GETBYASIGNATURA, conn);
+                break;
+            case 8:
+                output = proccesAlumnos("Introduce el DNI del profesor:", AlumnoDAO.GETBYPROFESOR, conn);
+                break;
+            case 9:
+                id = v.showMessageString("Introduce el archivo:");
+                alumnoDAO.insertUsingFile(id, conn);
+                break;
+             */
+            case 0:
+                return "";
             default:
+                return "";
 
         }
-        return output;
+
+    }
+
+    private static int generarClave() {
+        return (int) (Math.random() * 10000 + 90001);
     }
 
     private static String proccesAlumnos(String mensaje) {
-        String output = "";
+
         int id = v.showMessageInt(mensaje);
         try {
             alumnos.clear();
             alumnos.add(alumnoService.findById(id));
-            for (Alumno al : alumnos) {
-                output += al.toString();
-            }
+            return alumnos.stream().map(al -> al.toString()).reduce("", String::concat);
         } catch (NullPointerException nPE) {
-            v.showMessage("No hay alumnos con ese id");
+            return "No hay alumnos con ese id";
         } catch (Exception e) {
-            v.showMessage("Error " + e.getMessage());
+            return "Error " + e.getMessage();
         }
-
-        return output;
     }
 
     private static String profesor(int opcion) {
-        String output = "";
         switch (opcion) {
             case 1:
                 profesores = profesorService.findAll();
-                for (Profesor prof : profesores) {
-                    output += prof.toString();
+                return profesores.isEmpty() ? "No hay profesores" : profesores.stream().map(al -> al.toString()).reduce("", (string, str) -> string.concat(str));
+
+            case 2:
+                return processProfesores("Introduce el id");
+
+            case 3:
+                String dni,
+                 nombre,
+                 apellido,
+                 departamento;
+                float sueldo;
+
+                dni = v.showMessageString("Introduce el dni");
+                nombre = v.showMessageString("Introduce el nombre");
+                apellido = v.showMessageString("introduce los apellidos");
+                departamento = v.showMessageString("Introduce el departamento");
+
+                try {
+                    sueldo = Float.valueOf(v.showMessageString("Introduce el sueldo"));
+                    profesorService.persist(new Profesor(dni, nombre, apellido, departamento, sueldo));
+                    return "profesor añadido";
+                } catch (NumberFormatException e) {
+                    return "No se pudo añadir el profesor ".concat(e.getMessage());
+                } catch (Exception e) {
+                    return "Error: ".concat(e.getMessage());
                 }
 
-                break;
-            case 2:
-                output = processProfesores("Introduce el id");
-                break;
+            case 4:
+                int id = v.showMessageInt("Introduce el id del profesor a borrar");
+                try {
+                    profesorService.delete(id);
+                    return "Profesor eliminado";
+                } catch (IllegalArgumentException iAE) {
+                    return "No hay profesores con ese id";
+                } catch (Exception e) {
+                    return "Error:".concat(e.getMessage());
+                }
+
+            case 5:
+                int aleatorio = generarClave();
+                int codigo = v.showMessageInt("Si quieres borrar todo introduce el siguiente codigo: " + aleatorio);
+
+                profesorService.deleteAll();
+                return codigo == aleatorio ? "Todos borrados\n" : "No se han borrado los datos\n";
             /*case 3:
                 output = processProfesores("Introduce el nombre", ProfesorDAO.GETBYNOMBRE, conn);
                 break;
@@ -239,66 +303,49 @@ public class Controller {
                 id = v.showMessageString("Introduce el archivo");
                 profesorDAO.insertUsingFile(id, conn);
                 break;*/
-            case 3:
-                String dni,
-                 nombre,
-                 apellido,
-                 departamento;
-                float sueldo;
-
-                dni = v.showMessageString("Introduce el dni");
-                nombre = v.showMessageString("Introduce el nombre");
-                apellido = v.showMessageString("introduce los apellidos");
-                departamento = v.showMessageString("Introduce el departamento");
-
-                try {
-                    sueldo = Float.valueOf(v.showMessageString("Introduce el sueldo"));
-                    profesorService.persist(new Profesor(dni, nombre, apellido, departamento, sueldo));
-                } catch (NumberFormatException e) {
-                    v.showMessage("No se pudo añadir el profesor" + e.getMessage());
-                } catch (Exception e) {
-                    v.showMessage(e.getMessage());
-                }
-
+            case 0:
+                return "";
             default:
+                return "";
 
         }
-        return output;
-
     }
 
     private static String processProfesores(String mensaje) {
-        String output = "";
+
         int id = v.showMessageInt(mensaje);
         try {
             profesores.clear();
             profesores.add(profesorService.findById(id));
-            for (Profesor prof : profesores) {
-                output += prof.toString();
-            }
+            return profesores.stream().map(prof -> prof.toString()).reduce("", String::concat);
         } catch (NullPointerException nPE) {
-            v.showMessage("No hay profesores con ese id");
+            return "No hay profesores con ese id";
         } catch (Exception e) {
-            v.showMessage("Error " + e.getMessage());
+            return "Error ".concat(e.getMessage());
         }
 
-        return output;
     }
-    /*
-    private static String asignatura(int opcion, Connection conn) {
-        String output = "";
+
+    private static String asignatura(int opcion) {
+
         String id;
         switch (opcion) {
             case 1:
-                asignaturas = asignaturaDAO.get(AsignaturaDAO.GETALL, "", conn);
-                for (Asignatura as : asignaturas) {
-                    output += as;
-                }
-                break;
+                asignaturas = asignaturaService.findAll();
+                return asignaturas.isEmpty() ? "No hay asignaturas" : asignaturas.stream().map(al -> al.toString()).reduce("", (string, str) -> string.concat(str));
+
             case 2:
-                output = proccesAsignatura("Escribe el codigo", AsignaturaDAO.GETBYCODIGO, conn);
-                break;
+                return proccesAsignatura("Escribe el codigo");
             case 3:
+                String codigo = v.showMessageString("introduce el codigo");
+                String nombre = v.showMessageString("Introduce el nombre");
+                try {
+                    asignaturaService.persist(new Asignatura(codigo, nombre));
+                    return "Asignatura añadida";
+                } catch (Exception e) {
+                    return "No se pudo añadir la asignatura ".concat(e.getMessage());
+                }
+            /*case 3:
                 output = proccesAsignatura("Escribe el nombre", AsignaturaDAO.GETBYNOMBRE, conn);
                 break;
             case 4:
@@ -310,28 +357,23 @@ public class Controller {
             case 6:
                 id = v.showMessageString("Introduce el archivo");
                 asignaturaDAO.insertUsingFile(id, conn);
-                break;
-            case 7:
-                String codigo = v.showMessageString("introduce el codigo");
-                String nombre = v.showMessageString("Introduce el nombre");
-                asignaturaDAO.add(new Asignatura(codigo, nombre), conn);
-                break;
+                break;*/
+
+            case 0:
+                return "";
             default:
-                break;
+                return "";
         }
-        return output;
     }
 
-    private static String proccesAsignatura(String mensaje, int num, Connection conn) {
-        String id = "", output = "";
+    private static String proccesAsignatura(String mensaje) {
+        String id = "";
         id = v.showMessageString(mensaje);
-        asignaturas = asignaturaDAO.get(num, id, conn);
-        for (Asignatura asig : asignaturas) {
-            output += asig.toString();
-        }
-        return output;
+        asignaturas.add(asignaturaService.findById(id));
+        id = asignaturas.stream().map(asig -> asig.toString()).reduce(id, String::concat);
+        return id;
     }
-
+    /*
     private static String matricula(int opcion, Connection conn) {
         String output = "";
         String id;

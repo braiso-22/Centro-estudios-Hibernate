@@ -65,7 +65,9 @@ public class View {
         System.out.println("Selecciona una opcion:");
         System.out.println("01.- Ver todos los profesores");
         System.out.println("02.- Buscar profesor por id");
-        System.out.println("03.- Eliminar profesor");
+        System.out.println("03.-Insertar profesores a mano");
+        System.out.println("04.- Eliminar un profesor");
+        System.out.println("05.- Eliminar todos los alumnos");
         /*System.out.println("03.- Ver profesores buscando por nombre");
         System.out.println("04.- Ver profesores buscando por apellido");
         System.out.println("05.- Ver profesores buscando por departamento");
@@ -74,7 +76,6 @@ public class View {
         System.out.println("07.- Ver profesores buscando por asignatura");
         System.out.println("08.- Ver profesores por alumno");
         System.out.println("09.- Insertar profesores por archivo");*/
-        System.out.println("10.-Insertar profesores a mano");
         System.out.println("0.- Volver");
         return leerInt();
     }
