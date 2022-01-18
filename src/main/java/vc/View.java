@@ -84,11 +84,11 @@ public class View {
         System.out.println("Selecciona una opcion:");
         System.out.println("1.- Ver todas las asignaturas");
         System.out.println("2.- Buscar asignaturas por codigo");
+        System.out.println("3.- Insertar asignaturas a mano");
         /*System.out.println("3.- Buscar asignaturas por nombre");
         System.out.println("4.- Ver asignaturas buscando por alumno");
         System.out.println("5.- Ver asignaturas buscando por profesor");
         System.out.println("6.- Insertar asignaturas por archivo");*/
-        System.out.println("7.- Insertar asignaturas a mano");
         System.out.println("0.- Volver");
         return leerInt();
     }
@@ -96,8 +96,8 @@ public class View {
     public int menuMatriculas() {
         System.out.println("Selecciona una opcion:");
         System.out.println("1.- Ver todas las matriculas");
+        System.out.println("2.- Añadir matricula a mano");
         //System.out.println("2.- Añadir matriculas por archivo");
-        System.out.println("3.- Añadir matricula a mano");
         System.out.println("0.- Volver");
         return leerInt();
     }
