@@ -5,12 +5,8 @@
 package vo;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.Set;
+import javax.persistence.*;
 
 /**
  *
@@ -34,6 +30,9 @@ public class Profesor implements Serializable {
     private String departamento;
     @Column(name = "sueldo", nullable = false)
     private float sueldo;
+
+    @OneToMany(mappedBy = "Profesor", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Matricula> matriculas;
 
     public Profesor() {
     }
@@ -151,6 +150,14 @@ public class Profesor implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Set<Matricula> getMatriculas() {
+        return matriculas;
+    }
+
+    public void setMatriculas(Set<Matricula> matriculas) {
+        this.matriculas = matriculas;
     }
 
     @Override

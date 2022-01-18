@@ -6,12 +6,15 @@ package vc;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import service.AlumnoService;
 import service.AsignaturaService;
+import service.MatriculaService;
 import service.ProfesorService;
 import vo.Alumno;
 import vo.Asignatura;
+import vo.Matricula;
 import vo.Profesor;
 
 /**
@@ -24,14 +27,21 @@ public class Controller {
     static List<Alumno> alumnos;
     static List<Profesor> profesores;
     static List<Asignatura> asignaturas;
+    static List<Matricula> matriculas;
 
     static AlumnoService alumnoService = new AlumnoService();
     static ProfesorService profesorService = new ProfesorService();
     static AsignaturaService asignaturaService = new AsignaturaService();
+    static MatriculaService matriculaService = new MatriculaService();
 
     public static void main(String[] args) {
 
         v.showMessage("Cargando...");
+        alumnos = new ArrayList<>();
+        profesores = new ArrayList<>();
+        asignaturas = new ArrayList<>();
+        matriculas = new ArrayList<>();
+
         int opcion;
 
         do {
@@ -59,14 +69,14 @@ public class Controller {
                             opcion2 = v.menuAsignatura();
                             output += asignatura(opcion2);
                             break;
-                        /*case 4:
+                        case 4:
                             opcion2 = v.menuMatriculas();
-                            output += matricula(opcion2, conn);
-                            break;*/
-                        case 5:
+                            output += matricula(opcion2);
+                            break;
+                        /*case 5:
 
                             opcion2 = 0;
-                            break;
+                            break;*/
                         case 0:
                             v.showMessage("Saliendo...");
                             break;
@@ -86,7 +96,8 @@ public class Controller {
                 v.showMessage(output);
             } while (opcion2 != 0 && opcion != 0);
 
-        } while (opcion != 0);
+        } while (opcion
+                != 0);
 
     }
 
@@ -367,39 +378,46 @@ public class Controller {
     }
 
     private static String proccesAsignatura(String mensaje) {
-        String id = "";
-        id = v.showMessageString(mensaje);
+        String id = v.showMessageString(mensaje);
+        asignaturas.clear();
         asignaturas.add(asignaturaService.findById(id));
-        id = asignaturas.stream().map(asig -> asig.toString()).reduce(id, String::concat);
-        return id;
+        return asignaturas.stream().map(asig -> asig.toString()).reduce("", String::concat);
+
     }
-    /*
-    private static String matricula(int opcion, Connection conn) {
+
+    private static String matricula(int opcion) {
         String output = "";
         String id;
         switch (opcion) {
             case 1:
-                matriculas = detalleClaseDAO.get(DetalleClaseDAO.GETALL, "", conn);
-                for (DetalleClase matri : matriculas) {
-                    output += matri;
-                }
-                break;
+                matriculas = matriculaService.findAll();
+                return matriculas.isEmpty() ? "No hay matriculas" : matriculas.stream().map(al -> al.toString()).reduce("", String::concat);
             case 2:
-                id = v.showMessageString("Introduce el archivo");
-                detalleClaseDAO.insertUsingFile(id, conn);
+                int alumno = v.showMessageInt("Introduce el id del alumno");
+                int profesor = v.showMessageInt("Introduce el id del profesor");
+                String asignatura = v.showMessageString("Introduce el codigo de asignatura");
+                matriculaService.persist(new Matricula(alumno, profesor, asignatura));
                 break;
             case 3:
-                String alumno = v.showMessageString("Introduce el dni del alumno");
-                String profesor = v.showMessageString("Introduce el dni del profesor");
-                String asignatura = v.showMessageString("Introduce el codigo de asignatura");
-                detalleClaseDAO.add(new DetalleClase(alumno, profesor, asignatura), conn);
-                break;
+                matriculas.clear();
+                int idA = v.showMessageInt("introduce el id de alumno");
+                int idP = v.showMessageInt("Introduce el id de profesor");
+                String codigo = v.showMessageString("Introduce el codigo de asignatura");
+                try {
+                    matriculas.add(matriculaService.findById(idA, idP, codigo));
+                    return matriculas.stream().map(prof -> prof.toString()).reduce("", String::concat);
+                } catch (Exception e) {
+                    return "No se pudo añadir la asignatura ".concat(e.getMessage());
+                }
+            /*case 2:
+                id = v.showMessageString("Introduce el archivo");
+                detalleClaseDAO.insertUsingFile(id, conn);
+                break;*/
+
             default:
                 break;
         }
         return output;
     }
 
-
-     */
 }

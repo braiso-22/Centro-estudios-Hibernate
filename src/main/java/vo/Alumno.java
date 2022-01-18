@@ -3,6 +3,7 @@ package vo;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -26,6 +27,9 @@ public class Alumno implements Serializable {
     private String curso;
     @Column(name = "fecha_nacimiento", nullable = false)
     private LocalDate fechaNacimiento;
+
+    @OneToMany(mappedBy = "Alumno", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Matricula> matriculas;
 
     public Alumno() {
         super();
@@ -95,6 +99,22 @@ public class Alumno implements Serializable {
 
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Set<Matricula> getMatriculas() {
+        return matriculas;
+    }
+
+    public void setMatriculas(Set<Matricula> matriculas) {
+        this.matriculas = matriculas;
     }
 
     @Override

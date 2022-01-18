@@ -6,6 +6,7 @@ package factory;
 
 import dao.AlumnoDAO;
 import dao.AsignaturaDAO;
+import dao.MatriculaDAO;
 import dao.ProfesorDAO;
 
 /**
@@ -26,7 +27,11 @@ public class DaoFactory {
         return new ProfesorDAO();
     }
 
-   public AsignaturaDAO getAsignaturaDao() {
+    public AsignaturaDAO getAsignaturaDao() {
         return new AsignaturaDAO();
+    }
+
+    public MatriculaDAO getMatriculaDao() {
+        return new MatriculaDAO();
     }
 }

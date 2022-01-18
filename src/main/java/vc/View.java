@@ -67,7 +67,7 @@ public class View {
         System.out.println("02.- Buscar profesor por id");
         System.out.println("03.-Insertar profesores a mano");
         System.out.println("04.- Eliminar un profesor");
-        System.out.println("05.- Eliminar todos los alumnos");
+        System.out.println("05.- Eliminar todos los profesores");
         /*System.out.println("03.- Ver profesores buscando por nombre");
         System.out.println("04.- Ver profesores buscando por apellido");
         System.out.println("05.- Ver profesores buscando por departamento");
@@ -85,6 +85,8 @@ public class View {
         System.out.println("1.- Ver todas las asignaturas");
         System.out.println("2.- Buscar asignaturas por codigo");
         System.out.println("3.- Insertar asignaturas a mano");
+        System.out.println("4.- Eliminar una asignatura");
+        System.out.println("5.- Eliminar todas las asignaturas");
         /*System.out.println("3.- Buscar asignaturas por nombre");
         System.out.println("4.- Ver asignaturas buscando por alumno");
         System.out.println("5.- Ver asignaturas buscando por profesor");
@@ -97,6 +99,8 @@ public class View {
         System.out.println("Selecciona una opcion:");
         System.out.println("1.- Ver todas las matriculas");
         System.out.println("2.- Añadir matricula a mano");
+        System.out.println("3.- Eliminar una matricula");
+        System.out.println("4.- Eliminar todas las matriculas");
         //System.out.println("2.- Añadir matriculas por archivo");
         System.out.println("0.- Volver");
         return leerInt();

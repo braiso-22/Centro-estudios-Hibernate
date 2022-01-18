@@ -7,10 +7,8 @@ package vo;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.Set;
+import javax.persistence.*;
 
 /**
  *
@@ -26,6 +24,9 @@ public class Asignatura implements Serializable {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
+    @OneToMany(mappedBy = "Asignatura", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Matricula> matriculas;
+
     public Asignatura() {
     }
 
@@ -33,7 +34,6 @@ public class Asignatura implements Serializable {
         this.codigo = codigo;
         this.nombre = nombre;
     }
-    
 
     /**
      * Get the value of nombre
@@ -69,6 +69,14 @@ public class Asignatura implements Serializable {
      */
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    public Set<Matricula> getMatriculas() {
+        return matriculas;
+    }
+
+    public void setMatriculas(Set<Matricula> matriculas) {
+        this.matriculas = matriculas;
     }
 
     @Override
