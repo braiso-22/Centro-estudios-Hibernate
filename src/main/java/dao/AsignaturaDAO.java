@@ -40,7 +40,7 @@ public class AsignaturaDAO implements DaoInterface<Asignatura> {
 
     @Override
     public List<Asignatura> findAll(Session session) {
-        return (List<Asignatura>) session.createQuery("from asignatura").list();
+        return (List<Asignatura>) session.createQuery("from Asignatura").list();
     }
 
     @Override
