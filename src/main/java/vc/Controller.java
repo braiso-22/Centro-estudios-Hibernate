@@ -158,8 +158,12 @@ public class Controller {
             case 5:
                 int aleatorio = generarClave();
                 int codigo = v.showMessageInt("Si quieres borrar todo introduce el siguiente codigo: " + aleatorio);
-                alumnoService.deleteAll();
-                return codigo == aleatorio ? "Todos borrados\n" : "No se han borrado los datos\n";
+                if (codigo == aleatorio) {
+                    alumnoService.deleteAll();
+                    return "Todos borrados\n";
+                }
+
+                return "No se han borrado los datos\n";
             case 0:
                 return "";
             default:
@@ -222,9 +226,11 @@ public class Controller {
             case 5:
                 int aleatorio = generarClave();
                 int codigo = v.showMessageInt("Si quieres borrar todo introduce el siguiente codigo: " + aleatorio);
-
-                profesorService.deleteAll();
-                return codigo == aleatorio ? "Todos borrados\n" : "No se han borrado los datos\n";
+                if (codigo == aleatorio) {
+                    profesorService.deleteAll();
+                    return "Todos borrados\n";
+                }
+                return "No se han borrado los datos\n";
             case 0:
                 return "";
             default:
@@ -251,14 +257,33 @@ public class Controller {
             }
 
             case 3:
-                String codigo = v.showMessageString("introduce el codigo");
+                id = v.showMessageString("introduce el codigo");
                 String nombre = v.showMessageString("Introduce el nombre");
                 try {
-                    asignaturaService.persist(new Asignatura(codigo, nombre));
+                    asignaturaService.persist(new Asignatura(id, nombre));
                     return "Asignatura añadida";
                 } catch (Exception e) {
                     return "No se pudo añadir la asignatura ".concat(e.getMessage());
                 }
+            case 4:
+                id = v.showMessageString("Introduce el código");
+                try {
+                    asignaturaService.delete(id);
+                    return "Asignatura eliminada";
+                } catch (IllegalArgumentException iAE) {
+                    return "No hay asignaturas con ese codigo";
+                } catch (Exception e) {
+                    return "Error:".concat(e.getMessage());
+                }
+
+            case 5:
+                int aleatorio = generarClave();
+                int codigo = v.showMessageInt("Si quieres borrar todo introduce el siguiente codigo: " + aleatorio);
+                if (codigo == aleatorio) {
+                    alumnoService.deleteAll();
+                    return "Todos borrados\n";
+                }
+                return "No se han borrado los datos\n";
 
             case 0:
                 return "";
@@ -279,21 +304,42 @@ public class Controller {
                 alumno = v.showMessageInt("Introduce el id del alumno");
                 profesor = v.showMessageInt("Introduce el id del profesor");
                 asignatura = v.showMessageString("Introduce el codigo de asignatura");
-                
+
                 matriculaService.persist(new Matricula(alumno, profesor, asignatura));
                 break;
             case 3:
                 int idA = v.showMessageInt("introduce el id de alumno");
                 int idP = v.showMessageInt("Introduce el id de profesor");
-                String codigo = v.showMessageString("Introduce el codigo de asignatura");
+                String idAsi = v.showMessageString("Introduce el codigo de asignatura");
 
                 try {
-                    return matriculaService.findById(idA, idP, codigo).toString();
+                    return matriculaService.findById(idA, idP, idAsi).toString();
                 } catch (NullPointerException nPE) {
                     return "No hay matriculas con esos datos\n";
                 } catch (Exception e) {
                     return "Error ".concat(e.getMessage().concat("\n"));
                 }
+            case 4:
+                idA = v.showMessageInt("introduce el id de alumno");
+                idP = v.showMessageInt("Introduce el id de profesor");
+                idAsi = v.showMessageString("Introduce el codigo de asignatura");
+
+                try {
+                    matriculaService.delete(idA, idP, idAsi);
+                    return "Asignatura eliminada";
+                } catch (IllegalArgumentException iAE) {
+                    return "No hay asignaturas con ese codigo";
+                } catch (Exception e) {
+                    return "Error:".concat(e.getMessage());
+                }
+            case 5:
+                int aleatorio = generarClave();
+                int codigo = v.showMessageInt("Si quieres borrar todo introduce el siguiente codigo: " + aleatorio);
+                if (codigo == aleatorio) {
+                    alumnoService.deleteAll();
+                    return "Todos borrados\n";
+                }
+                return "No se han borrado los datos\n";
 
             default:
                 break;

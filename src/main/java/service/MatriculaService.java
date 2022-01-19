@@ -57,6 +57,13 @@ public class MatriculaService {
         sesionFactory.closeCurrentSessionwithTransaction();
     }
 
+    public void delete(int id, int id2, String id3) {
+        sesionFactory.openCurrentSessionwithTransaction();
+        Matricula matricula = (Matricula) matriculaDao.findById(id, id2, id3, sesionFactory.getCurrentSession());
+        matriculaDao.delete(matricula, sesionFactory.getCurrentSession());
+        sesionFactory.closeCurrentSessionwithTransaction();
+    }
+
     public List<Matricula> findAll() {
         sesionFactory.openCurrentSession();
         List<Matricula> matriculas = matriculaDao.findAll(sesionFactory.getCurrentSession());

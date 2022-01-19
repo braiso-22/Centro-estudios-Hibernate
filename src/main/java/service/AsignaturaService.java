@@ -43,7 +43,7 @@ public class AsignaturaService {
         return asignatura;
     }
 
-    public void delete(int id3) {
+    public void delete(String id3) {
         sesionFactory.openCurrentSessionwithTransaction();
         Asignatura asignatura = (Asignatura) asignaturaDao.findById(id3, sesionFactory.getCurrentSession());
         asignaturaDao.delete(asignatura, sesionFactory.getCurrentSession());
