@@ -280,7 +280,7 @@ public class Controller {
                 int aleatorio = generarClave();
                 int codigo = v.showMessageInt("Si quieres borrar todo introduce el siguiente codigo: " + aleatorio);
                 if (codigo == aleatorio) {
-                    alumnoService.deleteAll();
+                    asignaturaService.deleteAll();
                     return "Todos borrados\n";
                 }
                 return "No se han borrado los datos\n";
@@ -336,7 +336,7 @@ public class Controller {
                 int aleatorio = generarClave();
                 int codigo = v.showMessageInt("Si quieres borrar todo introduce el siguiente codigo: " + aleatorio);
                 if (codigo == aleatorio) {
-                    alumnoService.deleteAll();
+                    matriculaService.deleteAll();
                     return "Todos borrados\n";
                 }
                 return "No se han borrado los datos\n";
