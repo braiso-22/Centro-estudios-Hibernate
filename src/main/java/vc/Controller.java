@@ -110,7 +110,9 @@ public class Controller {
         switch (opcion) {
             case 1:
                 alumnos = alumnoService.findAll();
-                return alumnos.isEmpty() ? "No hay alumnos" : alumnos.stream().map(al -> al.toString()).reduce("", (string, str) -> string.concat(str));
+                return alumnos.isEmpty() ? "No hay alumnos" : alumnos.stream()
+                            .map(al -> al.toString())
+                            .reduce("", String::concat);
 
             case 2:
                 id = v.showMessageInt("Introduce el id del alumno");
