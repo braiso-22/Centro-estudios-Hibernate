@@ -102,7 +102,7 @@ public class Controller {
     }
 
     private static int generarClave() {
-        return (int) (Math.random() * 10000 + 90001);
+        return (int) ((Math.random() * 90000) + 10000);//10000
     }
 
     public static String alumno(int opcion) {
