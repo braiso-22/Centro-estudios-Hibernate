@@ -28,15 +28,3 @@ Permitir recuperar información básica:
            
   
   </ol>
-  <h2>Modelo E/R</h2>
- <img src="https://user-images.githubusercontent.com/81094589/141323030-e94a124b-054d-48a2-b7ab-3117174194fd.png">
-Entiendo que se quiere saber qué profesor va a dar qué asignatura a qué alumno, y que cada asignatura puede ser impartida por varios profesores a la vez.
-Considero que el departamento no necesita tabla ya que no aporta más información importante además de su nombre por lo que queda como atributo del profesor.
-
-  <h2>Modelo relacional</h2>
-<img src="https://user-images.githubusercontent.com/81094589/141324177-479487fe-56ef-4db4-9db5-cb4dd620acbb.png">
-  La interrelación triple genera una nueva tabla que tiene como clave primaria las claves del resto de tablas.
-  
-  <h2>Creación de la DB</h2>
-Código de creación: 
-https://drive.google.com/file/d/1_ieqHbnwlNoHF6Cv-psoOiYTA-yOF5dn/view?usp=sharing 
